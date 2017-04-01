@@ -4,8 +4,6 @@
 #
 
 import psycopg2
-import time
-
 
 
 def connect():
@@ -15,26 +13,29 @@ def connect():
 
 def deleteMatches():
     """Remove all the match records from the database."""
-    cursor = connect.cursor()
-    cursor.execute("DELETE * FROM matches;")
-    connect.commit()
-    connect.close()
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM matches;")
+    conn.commit()
+    conn.close()
 
 
 def deletePlayers():
     """Remove all the player records from the database."""
-    cursor = connect.cursor()
-    cursor.execute("DELETE * FROM players;")
-    connect.commit()
-    connect.close()
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM players;")
+    conn.commit()
+    conn.close()
 
 
 def countPlayers():
     """Returns the number of players currently registered."""
-    cursor = connect.cursor()
+    conn = connect()
+    cursor = conn.cursor()
     query = cursor.execute("SELECT count(*) FROM players;")
-    connection.close()
     return query
+    conn.close()
 
 
 def registerPlayer(name):
@@ -46,10 +47,11 @@ def registerPlayer(name):
     Args:
       name: the player's full name (need not be unique).
     """
-    cursor = connect.cursor()
+    conn = connect()
+    cursor = conn.cursor()
     cursor.execute("INSERT INTO players (name) VALUES ('name');")
-    connect.commit()
-    connect.close()
+    conn.commit()
+    conn.close()
 
 
 def playerStandings():
@@ -74,10 +76,12 @@ def reportMatch(winner, loser):
       winner:  the id number of the player who won
       loser:  the id number of the player who lost
     """
-    cursor = connect.cursor()
+    conn = connect()
+    cursor = conn.cursor()
     cursor.execute("INSERT INTO playsRecord (winner, loser) VALUES (winner, loser);")
-    connect.commit()
-    connect.close()
+    conn.commit()
+    conn.close()
+
 
 def swissPairings():
     """Returns a list of pairs of players for the next round of a match.
