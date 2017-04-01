@@ -32,9 +32,9 @@ def deletePlayers():
 def countPlayers():
     """Returns the number of players currently registered."""
     cursor = connect.cursor()
-    return cursor.execute("SELECT name FROM players;")
-
+    query = cursor.execute("SELECT count(*) FROM players;")
     connection.close()
+    return query
 
 
 def registerPlayer(name):
@@ -46,6 +46,8 @@ def registerPlayer(name):
     Args:
       name: the player's full name (need not be unique).
     """
+    cursor = connect.cursor()
+    cursor.execute("INSERT")
 
 
 def playerStandings():
