@@ -33,9 +33,10 @@ def countPlayers():
     """Returns the number of players currently registered."""
     conn = connect()
     cursor = conn.cursor()
-    query = cursor.execute("SELECT count(*) FROM players;")
-    return query
-    conn.close()
+    cursor.execute("SELECT count(*) FROM players;")
+    results = cursor.fetchone()
+    return results[0]
+
 
 
 def registerPlayer(name):
@@ -49,7 +50,8 @@ def registerPlayer(name):
     """
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO players (name) VALUES ('name');")
+    print "registered name", name
+    cursor.execute("INSERT INTO players (name) VALUES ('%s')" % (name,));
     conn.commit()
     conn.close()
 
