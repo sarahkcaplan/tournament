@@ -35,4 +35,24 @@ INSERT INTO matches (player1, player2) VALUES (3, 4);
 INSERT INTO matches (player1, player2) VALUES (1, 3);
 INSERT INTO matches (player1, player2) VALUES (2, 4);
 
-INSERT INTO playsRecord (winner, loser) VALUES
+INSERT INTO playsRecord (winner, loser) VALUES (1, 2);
+INSERT INTO playsRecord (winner, loser) VALUES (3, 4);
+INSERT INTO playsRecord (winner, loser) VALUES (3, 1);
+INSERT INTO playsRecord (winner, loser) VALUES (4, 2);
+
+# Join player id from matches with player name
+SELECT players.id as player_id, players.name from players, matches where players.id = matches.player1;
+
+# Count wins
+# Can I make a view for this?
+SELECT count(winner) FROM playsRecord where winner = %s; % n
+
+
+# Count matches player1
+SELECT players.id, count(matches.player1) FROM players, matches where players.id = matches.player1 GROUP BY players.id;
+SELECT count(player1) FROM matches GROUP BY player1;
+
+# Count matches player2
+SELECT players.id, count(matches.player2) FROM players, matches where players.id = matches.player2 GROUP BY players.id;
+
+# Create a view that lists id and sums up value of both count columns for player1, player2
