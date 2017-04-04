@@ -36,6 +36,7 @@ def countPlayers():
     cursor.execute("SELECT count(*) FROM players;")
     results = cursor.fetchone()
     return results[0]
+    conn.close()
 
 
 
@@ -50,7 +51,6 @@ def registerPlayer(name):
     """
     conn = connect()
     cursor = conn.cursor()
-    print "registered name", name
     cursor.execute("INSERT INTO players (name) VALUES ('%s')" % (name,));
     conn.commit()
     conn.close()
@@ -70,6 +70,16 @@ def playerStandings():
         matches: the number of matches the player has played
     """
 
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT player_name_id.player_id as player_id, player_name_id.name as player_name, wins_count.wins_count, players_matches_counts.matches_count FROM player_name_id, wins_count, players_matches_counts WHERE player_name_id.player_id = wins_count.player_id and player_name_id.player_id = players_matches_counts.player_id ORDER BY wins_count DESC;")
+    results = cursor.fetchall()
+    answer = []
+    for result in results:
+        print "answer", answer
+        answer + result
+    return answer
+    conn.close()
 
 def reportMatch(winner, loser):
     """Records the outcome of a single match between two players.
@@ -80,7 +90,7 @@ def reportMatch(winner, loser):
     """
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO playsRecord (winner, loser) VALUES (winner, loser);")
+    cursor.execute("INSERT INTO playsRecord (winner, loser) VALUES ('%s', '%s')" % (winner, loser));
     conn.commit()
     conn.close()
 
