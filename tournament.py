@@ -16,6 +16,7 @@ def deleteMatches():
     conn = connect()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM matches;")
+    cursor.execute("DELETE FROM playsRecord;")
     conn.commit()
     conn.close()
 
@@ -35,8 +36,8 @@ def countPlayers():
     cursor = conn.cursor()
     cursor.execute("SELECT count(*) FROM players;")
     results = cursor.fetchone()
-    return results[0]
     conn.close()
+    return results[0]
 
 
 
@@ -78,8 +79,8 @@ def playerStandings():
     answer = []
     for result in results:
         answer.append(result)
-    return answer
     conn.close()
+    return answer
 
 def reportMatch(winner, loser):
     """Records the outcome of a single match between two players.
@@ -113,5 +114,21 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT player_standings.player_id, player_standings.player_name FROM player_standings;")
+    results = cursor.fetchall()
+    leng = len(results)
+    answer = []
+    i = 0
+    while i < len(results):
+        pair = ()
+        pair += results[i]
+        pair += results[i+1]
+        answer.append(pair)
+        i = i + 2
+    conn.commit
+    conn.close
+    return answer
 
 
