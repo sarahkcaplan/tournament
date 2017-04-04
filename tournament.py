@@ -51,7 +51,8 @@ def registerPlayer(name):
     """
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO players (name) VALUES ('%s')" % (name,));
+    query = "INSERT INTO players (name) VALUES (%s);"
+    cursor.execute(query, (name,))
     conn.commit()
     conn.close()
 
@@ -76,8 +77,7 @@ def playerStandings():
     results = cursor.fetchall()
     answer = []
     for result in results:
-        print "answer", answer
-        answer + result
+        answer.append(result)
     return answer
     conn.close()
 
@@ -90,7 +90,8 @@ def reportMatch(winner, loser):
     """
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO playsRecord (winner, loser) VALUES ('%s', '%s')" % (winner, loser));
+    query = "INSERT INTO playsRecord (winner, loser) VALUES (%s, %s);"
+    cursor.execute(query, (winner, loser));
     conn.commit()
     conn.close()
 
