@@ -16,7 +16,6 @@ def deleteMatches():
     conn = connect()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM matches;")
-    cursor.execute("DELETE FROM playsRecord;")
     conn.commit()
     conn.close()
 
@@ -74,7 +73,7 @@ def playerStandings():
 
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT player_name_id.player_id as player_id, player_name_id.name as player_name, wins_count.wins_count, players_matches_counts.matches_count FROM player_name_id, wins_count, players_matches_counts WHERE player_name_id.player_id = wins_count.player_id and player_name_id.player_id = players_matches_counts.player_id ORDER BY wins_count DESC;")
+    cursor.execute("SELECT * FROM player_standings1;")
     results = cursor.fetchall()
     answer = []
     for result in results:
@@ -91,9 +90,7 @@ def reportMatch(winner, loser):
     """
     conn = connect()
     cursor = conn.cursor()
-    query = "INSERT INTO playsRecord (winner, loser) VALUES (%s, %s);"
-    cursor.execute(query, (winner, loser))
-    query = "INSERT INTO matches (player1, player2) VALUES (%s, %s);"
+    query = "INSERT INTO matches (winner, loser) VALUES (%s, %s);"
     cursor.execute(query, (winner, loser))
     conn.commit()
     conn.close()
@@ -116,9 +113,8 @@ def swissPairings():
     """
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT player_standings.player_id, player_standings.player_name FROM player_standings;")
+    cursor.execute("SELECT player_standings1.id, player_standings1.name FROM player_standings1;")
     results = cursor.fetchall()
-    leng = len(results)
     answer = []
     i = 0
     while i < len(results):
